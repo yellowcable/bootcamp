@@ -1,0 +1,11 @@
+{
+  "name": "template_api",
+  "version": "1.0.0",
+  "description": "template_api",
+  "main": "api.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Fernando",
+  "license": "ISC"
+}
