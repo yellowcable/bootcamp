@@ -8,28 +8,28 @@ contract Agro {
 	struct Animal {
 		uint256 dataRegistro;
 		string produtor;
-		//string idAnimal;
 		string caracteristicaAnimal;
 		string codRegistroMA;
 		bool registrado;
-		bool comprado;
+		bool consumido;
+
+		uint256 dataBeneficimento;
+		string codRegistroBeneficiamento;
 	}
 
-	struct Comprador {
+	struct Produto {
 		uint256 dataCompra;
 		string idAnimal;
-		uint256 dataBeneficimento;
-		//string codRegistroCompra;
-		bool consumiu;
 		bool validado;
+		uint256 rate; //0 a 10
 	}
 
 	event EventoRegistro(address indexed _who, string _idAnimal, uint256 _dataRegistro, string _produtor, string _caracteristicaAnimal, string _codRegistroMA);
-	event EventoConsumo(string _idAnimal, uint256 _dataCompra, uint256 _dataBeneficimento, string _codRegistroCompra);
-	event EventoValidacao(string _codRegistroMA, string _idAnimal);
+	event EventoConsumo(string _idAnimal, uint256 _dataBeneficimento, string _codRegistroCompra);
+	event EventoValidacao(string _codRegistroMA, string _idAnimal, uint256 p_dataCompra, uint256 p_rate);
 	
-	mapping(string => Animal) listaAnimais;
-	mapping(string => Comprador) listaCompradores;
+	mapping(string => Animal) listaAnimais; //lista por ID Animal
+	mapping(string => Produto) listaConsumo; //lista por codRegistro
 
 	modifier onlyOwner() {
 		require(msg.sender == owner);
@@ -53,7 +53,10 @@ contract Agro {
 		listaAnimais[p_id].caracteristicaAnimal = p_caracteristicaAnimal;
 		listaAnimais[p_id].codRegistroMA = p_codRegistroMA;
 		listaAnimais[p_id].registrado = true;
-		listaAnimais[p_id].comprado = false;
+		listaAnimais[p_id].consumido = false;
+
+		listaAnimais[p_id].dataBeneficimento = 0;
+		listaAnimais[p_id].codRegistroBeneficiamento = "";
 
 		EventoRegistro(msg.sender, p_id, p_dataRegistro, p_produtor, p_caracteristicaAnimal, p_codRegistroMA);		
 	}
@@ -64,49 +67,56 @@ contract Agro {
 				listaAnimais[p_id].caracteristicaAnimal,
 				listaAnimais[p_id].codRegistroMA,
 				listaAnimais[p_id].registrado,
-				listaAnimais[p_id].comprado);
+				listaAnimais[p_id].consumido);
 	}
 
-	function Consumo(string p_id, uint256 p_dataCompra, uint256 p_dataBeneficimento, string p_codRegistroCompra) {	
+	function Consumo(string p_id, uint256 p_dataBeneficimento, string p_codRegistro) {	
 		require(!(sha3(p_id) == sha3("")));
-		require(!(p_dataCompra == 0));
 		require(!(p_dataBeneficimento == 0));
-		require(!(sha3(p_codRegistroCompra) == sha3("")));
+		require(!(sha3(p_codRegistro) == sha3("")));
 		require(listaAnimais[p_id].registrado);
-		require(!listaAnimais[p_id].comprado);
-		require(!listaCompradores[p_codRegistroCompra].consumiu);
-		require(p_dataCompra > listaAnimais[p_id].dataRegistro && p_dataBeneficimento > listaAnimais[p_id].dataRegistro);
+		require(!listaAnimais[p_id].consumido);
+		require(p_dataBeneficimento > listaAnimais[p_id].dataRegistro);
 
-		listaCompradores[p_codRegistroCompra].dataCompra = p_dataCompra;
-		listaCompradores[p_codRegistroCompra].idAnimal = p_id;
-		listaCompradores[p_codRegistroCompra].dataBeneficimento = p_dataBeneficimento;
-		listaCompradores[p_codRegistroCompra].validado = false;
-		listaCompradores[p_codRegistroCompra].consumiu = true;
+		listaConsumo[p_codRegistro].dataCompra = 0;
+		listaConsumo[p_codRegistro].idAnimal = p_id;
+		listaConsumo[p_codRegistro].validado = false;
 
-		listaAnimais[p_id].comprado = true;
+		listaAnimais[p_id].dataBeneficimento = p_dataBeneficimento;
+		listaAnimais[p_id].codRegistroBeneficiamento = p_codRegistro;
 
-		EventoConsumo(p_id, p_dataCompra, p_dataBeneficimento, p_codRegistroCompra);
+		listaAnimais[p_id].consumido = true;
+
+		EventoConsumo(p_id, p_dataBeneficimento, p_codRegistro);
 	}
 
-	function ConsultaConsumo(string p_codRegistroCompra) constant returns (uint256, string, uint256, bool, bool) {
-		return (listaCompradores[p_codRegistroCompra].dataCompra,
-				listaCompradores[p_codRegistroCompra].idAnimal,
-				listaCompradores[p_codRegistroCompra].dataBeneficimento,
-				listaCompradores[p_codRegistroCompra].validado,
-				listaCompradores[p_codRegistroCompra].consumiu);
+	function ConsultaConsumo(string p_codRegistro) constant returns (uint256, string, uint256, bool, bool) {
+		return (listaConsumo[p_codRegistro].dataCompra,
+				listaConsumo[p_codRegistro].idAnimal,
+				listaAnimais[listaConsumo[p_codRegistro].idAnimal].dataBeneficimento,
+				listaConsumo[p_codRegistro].validado,
+				listaAnimais[listaConsumo[p_codRegistro].idAnimal].consumido);
 	}
 
-	function Validacao(string p_codRegistroCompra, string p_id) {
-		require(listaCompradores[p_codRegistroCompra].consumiu);
-		require(sha3(listaCompradores[p_codRegistroCompra].idAnimal) == sha3(p_id));
+	function Validacao(uint256 p_rate, uint256 p_dataCompra, string p_codRegistro, string p_id) {
+		require(listaAnimais[p_id].consumido);
+		require(!listaConsumo[p_codRegistro].validado);
+		require(p_rate >= 0);
+		require(p_rate <= 10);
+		require(sha3(listaConsumo[p_codRegistro].idAnimal) == sha3(p_id));
+		require(p_dataCompra > listaAnimais[p_id].dataBeneficimento);
 
-		listaCompradores[p_codRegistroCompra].validado = true;
+		listaConsumo[p_codRegistro].validado = true;
+		listaConsumo[p_codRegistro].dataCompra = p_dataCompra;
+		listaConsumo[p_codRegistro].rate = p_rate;
 
-		EventoValidacao(p_codRegistroCompra, p_id);
+		EventoValidacao(p_codRegistro, p_id, p_dataCompra, p_rate);
 	}
 
-	function ConsultaValidacao(string p_codRegistroCompra) constant returns (bool) {
-		return listaCompradores[p_codRegistroCompra].validado;
+	function ConsultaValidacao(string p_codRegistro) constant returns (uint256, uint256, bool) {
+		return (listaConsumo[p_codRegistro].rate,
+				listaConsumo[p_codRegistro].dataCompra,
+				listaConsumo[p_codRegistro].validado);
 	}
 }
 

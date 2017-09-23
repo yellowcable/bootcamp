@@ -8,13 +8,13 @@ contract('TU2 - Consumo', function(accounts) {
     return Agro.deployed().then(function(instance) {
       inst = instance;
 
-      //realiza o registro de um asset
+        //realiza o registro do asset
     }).then(function(result) {
-      //realiza o consumo desse asset
+        //realiza o consumo do registro recem criado
     }).then(function(result) {
-      //consulta o consumo, com seu retorno
+        //consulta o consumo
     }).then(function(result) {
-      //verifica se o retorno é o esperado. (todas variáveis iguais)
+        //verifica se os dados de retorno estao iguais com os de entrada
     });
   });
   it("Não é possível consumir algo que já foi consumido", function() {
@@ -26,15 +26,13 @@ contract('TU2 - Consumo', function(accounts) {
 
       consumo = {
         id : "BOI1",
-        dataCompra : 20170921,
         dataBeneficiamento : 20170921,
-        codRegistroCompra : "DOPPIEDOPIE"
+        codRegistro : "DOPPIEDOPIE"
       };
 
       return inst.Consumo(consumo.id, 
-                           consumo.dataCompra,
                            consumo.dataBeneficiamento,
-                           consumo.codRegistroCompra, {from: web3.eth.coinbase});
+                           consumo.codRegistro, {from: web3.eth.coinbase});
     }).catch(function(error) {
       if(error.toString().indexOf("opcode") != -1) {
         console.log("Consumo não permitido.");
@@ -67,15 +65,13 @@ contract('TU2 - Consumo', function(accounts) {
     }).then(function(result) {
       consumo = {
         id : "BOI2",
-        dataCompra : 20170919,
         dataBeneficiamento : 20170919,
-        codRegistroCompra : "COMPRAHAS12"
+        codRegistro : "COMPRAHAS12"
       };
 
       return inst.Consumo(consumo.id, 
-                           consumo.dataCompra,
                            consumo.dataBeneficiamento,
-                           consumo.codRegistroCompra, {from: web3.eth.coinbase});
+                           consumo.codRegistro, {from: web3.eth.coinbase});
     }).catch(function(error) {
       if(error.toString().indexOf("opcode") != -1) {
         console.log("Consumo não permitido");
@@ -108,15 +104,13 @@ contract('TU2 - Consumo', function(accounts) {
     }).then(function(result) {
       consumo = {
         id : "",
-        dataCompra : 0,
         dataBeneficiamento : 0,
-        codRegistroCompra : ""
+        codRegistro : ""
       };
 
       return inst.Consumo(consumo.id, 
-                           consumo.dataCompra,
                            consumo.dataBeneficiamento,
-                           consumo.codRegistroCompra, {from: web3.eth.coinbase});
+                           consumo.codRegistro, {from: web3.eth.coinbase});
     }).catch(function(error) {
       if(error.toString().indexOf("opcode") != -1) {
         console.log("Consumo não permitido");

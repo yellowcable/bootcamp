@@ -8,11 +8,11 @@ contract('TU1 - Registro', function(accounts) {
     return Agro.deployed().then(function(instance) {
       inst = instance;
 
-      //Incluir registro 
+        //realiza o registro do asset
     }).then(function(result) {
-      //incluir consulta do registro
+        //consulta o registro
     }).then(function(result) {
-      //validar se o retorno é igual. (todas as variáveis sao iguais)
+        //verifica se os dados de retorno estáo iguais o de entrada
     });
   });
   it("Não é permitido o registro do mesmo animal (ID) duas vezes.", function() {

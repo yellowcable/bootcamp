@@ -14,22 +14,22 @@ contract Agro {
 		owner = msg.sender;
 	}
 		
-	function Registro(string p_id, uint256 p_dataRegistro, string p_produtor, string p_caracteristicaAnimal, string p_codRegistroMA) {		
+	function Registro(string p_id, uint256 p_dataRegistro, string p_produtor, string p_caracteristicaAnimal, string p_codRegistroMA) onlyOwner {		
 	}
 
 	function ConsultaRegistro(string p_id) constant returns (uint256, string, string, string, bool, bool) {
 	}
 
-	function Consumo(string p_id, uint256 p_dataCompra, uint256 p_dataBeneficiamento, string p_codRegistroCompra) {		
+	function Consumo(string p_id, uint256 p_dataBeneficimento, string p_codRegistro) {	
 	}
 
-	function ConsultaConsumo(string p_codRegistroCompra) constant returns (uint256, string, uint256, bool, bool) {
+	function ConsultaConsumo(string p_codRegistro) constant returns (uint256, string, uint256, bool, bool) {
 	}
 
-	function Validacao(string p_codRegistroCompra, string p_id) {
+	function Validacao(uint256 p_rate, uint256 p_dataCompra, string p_codRegistro, string p_id) {
 	}
 
-	function ConsultaValidacao(string p_codRegistroCompra) constant returns (bool) {
+	function ConsultaValidacao(string p_codRegistro) constant returns (uint256, uint256, bool) {
 	}
 }
 

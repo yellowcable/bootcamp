@@ -24,19 +24,16 @@ contract('TU2 - Consumo', function(accounts) {
     }).then(function(result) {
       consumo = {
         id : "BOI1",
-        dataCompra : 20170921,
         dataBeneficiamento : 20170921,
-        codRegistroCompra : "COMPRAHAS12"
+        codRegistro : "COMPRAHAS12"
       };
-
       return inst.Consumo(consumo.id, 
-                           consumo.dataCompra,
                            consumo.dataBeneficiamento,
-                           consumo.codRegistroCompra, {from: web3.eth.coinbase});
+                           consumo.codRegistro, {from: web3.eth.coinbase});
     }).then(function(result) {
-        return inst.ConsultaConsumo.call(consumo.codRegistroCompra);
+        return inst.ConsultaConsumo.call(consumo.codRegistro);
     }).then(function(result) {
-        assert.equal(consumo.dataCompra, result[0], "dataCompra nao está igual");
+        assert.equal(0, result[0], "dataCompra nao deve estar setada");
         assert.equal(consumo.id, result[1], "id não está igual")
         assert.equal(consumo.dataBeneficiamento, result[2], "dataBeneficiamento  não está igual");;
         assert.equal(false, result[3], "validado errado");
@@ -52,15 +49,13 @@ contract('TU2 - Consumo', function(accounts) {
 
       consumo = {
         id : "BOI1",
-        dataCompra : 20170921,
         dataBeneficiamento : 20170921,
-        codRegistroCompra : "DOPPIEDOPIE"
+        codRegistro : "DOPPIEDOPIE"
       };
 
       return inst.Consumo(consumo.id, 
-                           consumo.dataCompra,
                            consumo.dataBeneficiamento,
-                           consumo.codRegistroCompra, {from: web3.eth.coinbase});
+                           consumo.codRegistro, {from: web3.eth.coinbase});
     }).catch(function(error) {
       if(error.toString().indexOf("opcode") != -1) {
         console.log("Consumo não permitido.");
@@ -93,15 +88,13 @@ contract('TU2 - Consumo', function(accounts) {
     }).then(function(result) {
       consumo = {
         id : "BOI2",
-        dataCompra : 20170919,
         dataBeneficiamento : 20170919,
-        codRegistroCompra : "COMPRAHAS12"
+        codRegistro : "COMPRAHAS12"
       };
 
       return inst.Consumo(consumo.id, 
-                           consumo.dataCompra,
                            consumo.dataBeneficiamento,
-                           consumo.codRegistroCompra, {from: web3.eth.coinbase});
+                           consumo.codRegistro, {from: web3.eth.coinbase});
     }).catch(function(error) {
       if(error.toString().indexOf("opcode") != -1) {
         console.log("Consumo não permitido");
@@ -134,15 +127,13 @@ contract('TU2 - Consumo', function(accounts) {
     }).then(function(result) {
       consumo = {
         id : "",
-        dataCompra : 0,
         dataBeneficiamento : 0,
-        codRegistroCompra : ""
+        codRegistro : ""
       };
 
       return inst.Consumo(consumo.id, 
-                           consumo.dataCompra,
                            consumo.dataBeneficiamento,
-                           consumo.codRegistroCompra, {from: web3.eth.coinbase});
+                           consumo.codRegistro, {from: web3.eth.coinbase});
     }).catch(function(error) {
       if(error.toString().indexOf("opcode") != -1) {
         console.log("Consumo não permitido");
