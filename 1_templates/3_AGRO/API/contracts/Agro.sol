@@ -14,7 +14,7 @@ contract Agro {
 		owner = msg.sender;
 	}
 		
-	function Registro(string p_id, uint256 p_dataRegistro, string p_produtor, string p_caracteristicaAnimal, string p_codRegistroMA) onlyOwner {		
+	function Registro(string p_id, uint256 p_dataRegistro, string p_produtor, string p_caracteristicaAnimal, string p_codRegistroMA) onlyOwner {	
 	}
 
 	function ConsultaRegistro(string p_id) constant returns (uint256, string, string, string, bool, bool) {
@@ -30,6 +30,9 @@ contract Agro {
 	}
 
 	function ConsultaValidacao(string p_codRegistro) constant returns (uint256, uint256, bool) {
+	}
+
+	function Consulta(string p_codRegistro, string p_id) constant returns (string, uint256, string, uint256, uint256, uint256) {
 	}
 }
 

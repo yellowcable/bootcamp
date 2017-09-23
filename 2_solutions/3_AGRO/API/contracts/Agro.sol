@@ -25,7 +25,7 @@ contract Agro {
 	}
 
 	event EventoRegistro(address indexed _who, string _idAnimal, uint256 _dataRegistro, string _produtor, string _caracteristicaAnimal, string _codRegistroMA);
-	event EventoConsumo(string _idAnimal, uint256 _dataBeneficimento, string _codRegistroCompra);
+	event EventoConsumo(string _idAnimal, uint256 _dataBeneficimento, string _codRegistroBeneficiamento);
 	event EventoValidacao(string _codRegistroMA, string _idAnimal, uint256 p_dataCompra, uint256 p_rate);
 	
 	mapping(string => Animal) listaAnimais; //lista por ID Animal
@@ -117,6 +117,15 @@ contract Agro {
 		return (listaConsumo[p_codRegistro].rate,
 				listaConsumo[p_codRegistro].dataCompra,
 				listaConsumo[p_codRegistro].validado);
+	}
+
+	function Consulta(string p_codRegistro, string p_id) constant returns (string, uint256, string, uint256, uint256, uint256) {
+		return (p_id,
+				listaAnimais[p_id].dataRegistro,
+				p_codRegistro,
+				listaAnimais[p_id].dataBeneficimento,
+				listaConsumo[p_codRegistro].dataCompra,
+				listaConsumo[p_codRegistro].rate);
 	}
 }
 

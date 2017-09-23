@@ -47,9 +47,8 @@ app.get('/api/registro', function(req, res) {
 app.get('/api/consumo', function(req, res) {
 	var consumo = {
         id : req.param('id'),
-        dataCompra : req.param('dataCompra'),
         dataBeneficiamento : req.param('dataBeneficiamento'),
-        codRegistroCompra : req.param('codRegistroCompra')
+        codRegistro : req.param('codRegistro')
      };
 
 	var instancia;
@@ -58,9 +57,8 @@ app.get('/api/consumo', function(req, res) {
 		instancia = instance;
 
 		return instancia.Consumo(consumo.id, 
-                           consumo.dataCompra,
                            consumo.dataBeneficiamento,
-                           consumo.codRegistroCompra, {from: contaRegistro, gas: 400000});
+                           consumo.codRegistro, {from: contaRegistro, gas: 400000});
 	}).then(function (result) {
 		res.send(result)
 	}).catch(function(e) {
@@ -72,16 +70,17 @@ app.get('/api/consumo', function(req, res) {
 app.get('/api/validacao', function(req, res) {
 	var validacao = {
 		id : req.param('id'),
-		codRegistroCompra : req.param('codRegistroCompra'),
+		codRegistro : req.param('codRegistro'),
+		rate: req.param('rate'),
+		dataCompra: req.param('dataCompra')
 	}
 
 	var instancia;
 
 	contrato.deployed().then(function(instance) {
 		instancia = instance;
-
-		return instancia.Validacao(validacao.codRegistroCompra,
-                              validacao.id, {from: web3.eth.coinbase});
+		return instancia.Validacao(validacao.rate, validacao.dataCompra, validacao.codRegistro,
+                              validacao.id, {from: contaRegistro, gas: 400000});
 	}).then(function (result) {
 		res.send(result);
 	}).catch(function(e) {
@@ -91,6 +90,35 @@ app.get('/api/validacao', function(req, res) {
 });
 
 app.get('/api/consulta', function(req, res) {
+	var consulta = {
+		id : req.param('id'),
+		codRegistro : req.param('codRegistro'),
+	}
+
+	var instancia;
+
+	contrato.deployed().then(function(instance) {
+		instancia = instance;
+
+		return instancia.Consulta(consulta.codRegistro,
+                              consulta.id, {from: web3.eth.coinbase});
+	}).then(function (result) {
+		var resultado = {
+			id: result[0],
+			dataRegistro: result[1],
+			codBeneficiamento: result[2],
+			dataBeneficiamento: result[3],
+			dataCompra: result[4],
+			rate: result[5]
+		}
+		res.send(resultado);
+	}).catch(function(e) {
+	    console.log(e);
+	    res.send(e);
+  	});
+});
+
+app.get('/api/historico', function(req, res) {
 	var v_dados = { }
 
 	var instancia;

@@ -18,9 +18,11 @@ contract Health {
 		string farmarcia;
 		string loteID;
 		uint256 qtd;
+		uint256 dataCompra;
 		string crm_medico;
 		bool consumiu;
 		bool validado;
+		uint256 qtdConsumida;
 	}
 
 	event EventoRegistro(address indexed _who, string _idLote, uint256 _dataFabric, string _empresa, uint256 _validade, uint256 _qtd);
@@ -88,6 +90,8 @@ contract Health {
 		listaConsumidores[p_cpf].crm_medico = p_crm_medico;
 		listaConsumidores[p_cpf].validado = false;
 		listaConsumidores[p_cpf].consumiu = true;
+		listaConsumidores[p_cpf].dataCompra = p_data;
+		listaConsumidores[p_cpf].qtdConsumida = p_qtd;
 
 		EventoConsumo(p_farmacia, p_crm_medico, p_cpf, p_id, p_qtd, p_data);
 	}
@@ -112,6 +116,15 @@ contract Health {
 
 	function ConsultaValidacao(uint256 p_cpf) constant returns (bool) {
 		return listaConsumidores[p_cpf].validado;
+	}
+
+	function Consulta(uint256 p_cpf, string p_id) constant returns (uint256, string, string, uint256, string, uint256) {
+		return (p_cpf,
+				p_id,
+				listaConsumidores[p_cpf].farmarcia,
+				listaConsumidores[p_cpf].dataCompra,
+				listaLotes[p_id].empresa,
+				listaConsumidores[p_cpf].qtdConsumida);
 	}
 }
 

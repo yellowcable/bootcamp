@@ -14,22 +14,25 @@ contract Health {
 		owner = msg.sender;
 	}
 		
-	function Registro(string p_id, uint256 p_dataFabric, string p_empresa, uint256 p_validade, uint256 p_qtd) onlyOwner {		
+	function Registro(string p_id, uint256 p_dataFabric, string p_empresa, uint256 p_validade, uint256 p_qtd) onlyOwner {	
 	}
 
 	function ConsultaRegistro(string p_id) constant returns (uint256, string, uint256, uint256, uint256, bool) {
 	}
 
-	function Consumo(string p_id, string p_farmacia, string p_crm_medico, uint256 p_cpf, uint256 p_qtd, uint256 p_data) {		
+	function Consumo(string p_id, string p_farmacia, string p_crm_medico, uint256 p_cpf, uint256 p_qtd, uint256 p_data) {	
 	}
 
-	function ConsultaRegistro(uint256 p_cpf) constant returns (string, string, uint256, string, bool, bool) {
+	function ConsultaConsumo(uint256 p_cpf) constant returns (string, string, uint256, string, bool, bool) {
 	}
 
 	function Validacao(uint256 p_cpf, string p_id) {
 	}
 
-	function ConsultaValidacao(uint256 p_cpf) constant returns (bool)) {
+	function ConsultaValidacao(uint256 p_cpf) constant returns (bool) {
+	}
+
+	function Consulta(uint256 p_cpf, string p_id) constant returns (uint256, string, string, uint256, string, uint256) {
 	}
 }
 

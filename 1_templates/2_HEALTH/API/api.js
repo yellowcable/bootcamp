@@ -18,48 +18,42 @@ contrato.setProvider(provider);
 var contaRegistro = web3.eth.coinbase;
 
 app.get('/api/registro', function(req, res) {
-	var v_dados = { }
+	var registro = {
+        id : req.param('id'),
+        dataFabric : req.param('dataFabric'),
+        empresa : req.param('empresa'),
+        validade : req.param('validade'),
+        quantidade : req.param('quantidade')
+	};
 
 	var instancia;
 
 	contrato.deployed().then(function(instance) {
-		instancia = intance;
+		instancia = instance;
 
-		return instancia.Registro(/*"parametros"*/, {from: contaRegistro})
+		return instancia.Registro(registro.id, 
+								  registro.dataFabric,
+								  registro.empresa,
+								  registro.validade,
+								  registro.quantidade, {from: contaRegistro, gas: 400000})
 	}).then(function (result) {
 		res.send(result);
-	});
+	}).catch(function(e) {
+	    console.log(e);
+	    res.send(e);
+  	});
 });
 
 app.get('/api/consumo', function(req, res) {
-	var v_dados = { }
-
-	var instancia;
-
-	contrato.deployed().then(function(instance) {
-		instancia = intance;
-
-		return instancia.Consumo(/*"parametros"*/, {from: /*"consumidor"*/ })
-	}).then(function (result) {
-		res.send(result)
-	});
 });
 
 app.get('/api/validacao', function(req, res) {
-	var v_dados = { }
-
-	var instancia;
-
-	contrato.deployed().then(function(instance) {
-		instancia = intance;
-
-		return instancia.Validacao(/*"parametros"*/, {from: /*"consumidor"*/ })
-	}).then(function (result) {
-		res.send(result);
-	});
 });
 
 app.get('/api/consulta', function(req, res) {
+});
+
+app.get('/api/historico', function(req, res) {
 	var v_dados = { }
 
 	var instancia;
@@ -78,7 +72,8 @@ app.get('/api/consulta', function(req, res) {
 	        myEvent.stopWatching();
 	        result.forEach(function(_event) {
 				var event = {
-					/*"parametros"*/
+					evento: _event.args,
+					status: _event.event
 				}
 				hist.push(event);
 			});

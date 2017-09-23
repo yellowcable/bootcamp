@@ -95,6 +95,35 @@ app.get('/api/validacao', function(req, res) {
 });
 
 app.get('/api/consulta', function(req, res) {
+	var consulta = {
+		id : req.param('id'),
+		cpf : req.param('cpf'),
+	}
+
+	var instancia;
+
+	contrato.deployed().then(function(instance) {
+		instancia = instance;
+
+		return instancia.Consulta(consulta.cpf,
+                              consulta.id, {from: web3.eth.coinbase});
+	}).then(function (result) {
+		var resultado = {
+			cpf: result[0],
+			lote: result[1],
+			farmacia: result[2],
+			data_compra: result[3],
+			fabricante: result[4],
+			quantidade :result[5]
+		};
+		res.send(resultado);
+	}).catch(function(e) {
+	    console.log(e);
+	    res.send(e);
+  	});
+});
+
+app.get('/api/historico', function(req, res) {
 	var v_dados = { }
 
 	var instancia;

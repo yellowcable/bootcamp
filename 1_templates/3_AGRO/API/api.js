@@ -18,48 +18,68 @@ contrato.setProvider(provider);
 var contaRegistro = web3.eth.coinbase;
 
 app.get('/api/registro', function(req, res) {
-	var v_dados = { }
+	var registro = {
+		id : req.param('id'),
+		dataRegistro : req.param('dataRegistro'),
+		produtor : req.param('produtor'),
+		caractAnimal : req.param('caractAnimal'),
+		codigoRegistroMA : req.param('codigoRegistroMA'),
+	};
 
 	var instancia;
 
 	contrato.deployed().then(function(instance) {
-		instancia = intance;
+		instancia = instance;
 
-		return instancia.Registro(/*"parametros"*/, {from: contaRegistro})
+		return instancia.Registro(registro.id, 
+								  registro.dataRegistro,
+								  registro.produtor,
+								  registro.caractAnimal,
+								  registro.codigoRegistroMA, {from: contaRegistro, gas: 400000})
 	}).then(function (result) {
 		res.send(result);
-	});
+	}).catch(function(e) {
+	    console.log(e);
+	    res.send(e);
+  	});
 });
 
 app.get('/api/consumo', function(req, res) {
-	var v_dados = { }
-
-	var instancia;
-
-	contrato.deployed().then(function(instance) {
-		instancia = intance;
-
-		return instancia.Consumo(/*"parametros"*/, {from: /*"consumidor"*/ })
-	}).then(function (result) {
-		res.send(result)
-	});
 });
 
 app.get('/api/validacao', function(req, res) {
-	var v_dados = { }
+});
+
+app.get('/api/consulta', function(req, res) {
+	var consulta = {
+		id : req.param('id'),
+		codRegistro : req.param('codRegistro'),
+	}
 
 	var instancia;
 
 	contrato.deployed().then(function(instance) {
-		instancia = intance;
+		instancia = instance;
 
-		return instancia.Validacao(/*"parametros"*/, {from: /*"consumidor"*/ })
+		return instancia.Consulta(consulta.codRegistro,
+                              consulta.id, {from: web3.eth.coinbase});
 	}).then(function (result) {
-		res.send(result);
-	});
+		var resultado = {
+			id: result[0],
+			dataRegistro: result[1],
+			codBeneficiamento: result[2],
+			dataBeneficiamento: result[3],
+			dataCompra: result[4],
+			rate: result[5]
+		}
+		res.send(resultado);
+	}).catch(function(e) {
+	    console.log(e);
+	    res.send(e);
+  	});
 });
 
-app.get('/api/consulta', function(req, res) {
+app.get('/api/historico', function(req, res) {
 	var v_dados = { }
 
 	var instancia;
@@ -78,7 +98,8 @@ app.get('/api/consulta', function(req, res) {
 	        myEvent.stopWatching();
 	        result.forEach(function(_event) {
 				var event = {
-					/*"parametros"*/
+					evento: _event.args,
+					status: _event.event
 				}
 				hist.push(event);
 			});
