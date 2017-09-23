@@ -8,39 +8,13 @@ contract('TU2 - Consumo', function(accounts) {
     return Agro.deployed().then(function(instance) {
       inst = instance;
 
-      var registro = {
-        id : "BOI1",
-        dataRegistro : 20170920,
-        produtor : "REI DO GADO",
-        caractAnimal : "PRETO",
-        codigoRegistroMA : "BP171"
-      };
-
-      return inst.Registro(registro.id, 
-                           registro.dataRegistro,
-                           registro.produtor,
-                           registro.caractAnimal,
-                           registro.codigoRegistroMA, {from: web3.eth.coinbase});
+      //realiza o registro de um asset
     }).then(function(result) {
-      consumo = {
-        id : "BOI1",
-        dataCompra : 20170921,
-        dataBeneficiamento : 20170921,
-        codRegistroCompra : "COMPRAHAS12"
-      };
-
-      return inst.Consumo(consumo.id, 
-                           consumo.dataCompra,
-                           consumo.dataBeneficiamento,
-                           consumo.codRegistroCompra, {from: web3.eth.coinbase});
+      //realiza o consumo desse asset
     }).then(function(result) {
-        return inst.ConsultaConsumo.call(consumo.codRegistroCompra);
+      //consulta o consumo, com seu retorno
     }).then(function(result) {
-        assert.equal(consumo.dataCompra, result[0], "dataCompra nao está igual");
-        assert.equal(consumo.id, result[1], "id não está igual")
-        assert.equal(consumo.dataBeneficiamento, result[2], "dataBeneficiamento  não está igual");;
-        assert.equal(false, result[3], "validado errado");
-        assert.equal(true, result[4], "não foi consumido");
+      //verifica se o retorno é o esperado. (todas variáveis iguais)
     });
   });
   it("Não é possível consumir algo que já foi consumido", function() {

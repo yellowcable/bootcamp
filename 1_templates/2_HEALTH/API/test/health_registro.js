@@ -8,26 +8,11 @@ contract('TU1 - Registro', function(accounts) {
     return Health.deployed().then(function(instance) {
       inst = instance;
 
-      registro = {
-        id : "LOTE1",
-        dataFrabric : 20170920,
-        empresa : "BAYER",
-        validade : 20180920,
-        quantidade : 50
-      };
-
-      return inst.Registro(registro.id, 
-                           registro.dataFrabric,
-                           registro.empresa,
-                           registro.validade,
-                           registro.quantidade, {from: web3.eth.coinbase});
+      //realiza o registro de um asset
     }).then(function(result) {
-        return inst.ConsultaRegistro.call(registro.id);
+      //consulta o registro de um asset 
     }).then(function(result) {
-        assert.equal(registro.dataFrabric, result[0], "Data nao está igual");
-        assert.equal(registro.empresa, result[1], "Empresa não está igual");
-        assert.equal(registro.validade, result[2], "validade não está igual");
-        assert.equal(registro.quantidade, result[3], "quantidade não está igual");
+      //compara o retorno para validar. (todas as variaveis iguais)
     });
   });
   it("Não é permitido o registro do mesmo Lote ID duas vezes.", function() {

@@ -1,26 +1,5 @@
 pragma solidity ^0.4.13;
 
-library SafeMath {
-	function times(uint256 x, uint256 y) internal returns (uint256) {
-		uint256 z = x * y;
-		assert(x == 0 || (z / x == y));
-		return z;
-	}
-	
-	function plus(uint256 x, uint256 y) internal returns (uint256) {
-		uint256 z = x + y;
-		assert(z >= x && z >= y);
-		return z;
-	}
-
-  	function div(uint256 a, uint256 b) internal constant returns (uint256) {
-	    // assert(b > 0); // Solidity automatically throws when dividing by 0
-	    uint256 c = a / b;
-	    // assert(a == b * c + a % b); // There is no case in which this doesn't hold
-	    return c;
-  	}
-}
-
 contract Agro {
 	using SafeMath for uint256;
     
@@ -52,4 +31,25 @@ contract Agro {
 
 	function ConsultaValidacao(string p_codRegistroCompra) constant returns (bool) {
 	}
+}
+
+library SafeMath {
+	function times(uint256 x, uint256 y) internal returns (uint256) {
+		uint256 z = x * y;
+		assert(x == 0 || (z / x == y));
+		return z;
+	}
+	
+	function plus(uint256 x, uint256 y) internal returns (uint256) {
+		uint256 z = x + y;
+		assert(z >= x && z >= y);
+		return z;
+	}
+
+  	function div(uint256 a, uint256 b) internal constant returns (uint256) {
+	    // assert(b > 0); // Solidity automatically throws when dividing by 0
+	    uint256 c = a / b;
+	    // assert(a == b * c + a % b); // There is no case in which this doesn't hold
+	    return c;
+  	}
 }

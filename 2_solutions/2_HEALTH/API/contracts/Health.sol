@@ -1,26 +1,5 @@
 pragma solidity ^0.4.13;
 
-library SafeMath {
-	function times(uint256 x, uint256 y) internal returns (uint256) {
-		uint256 z = x * y;
-		assert(x == 0 || (z / x == y));
-		return z;
-	}
-	
-	function plus(uint256 x, uint256 y) internal returns (uint256) {
-		uint256 z = x + y;
-		assert(z >= x && z >= y);
-		return z;
-	}
-
-  	function div(uint256 a, uint256 b) internal constant returns (uint256) {
-	    // assert(b > 0); // Solidity automatically throws when dividing by 0
-	    uint256 c = a / b;
-	    // assert(a == b * c + a % b); // There is no case in which this doesn't hold
-	    return c;
-  	}
-}
-
 contract Health {
 	using SafeMath for uint256;
     
@@ -62,6 +41,12 @@ contract Health {
 		
 	function Registro(string p_id, uint256 p_dataFabric, string p_empresa, uint256 p_validade, uint256 p_qtd) onlyOwner {	
 		require(!listaLotes[p_id].registrado);
+		require(!(sha3(p_id) == sha3("")));
+		require(!(p_dataFabric == 0));
+		require(!(sha3(p_empresa) == sha3("")));
+		require(!(p_validade == 0));
+		require(!(p_qtd == 0));
+		require(p_dataFabric < p_validade);
 		
 		listaLotes[p_id].dataFabric = p_dataFabric;
 		listaLotes[p_id].empresa = p_empresa;
@@ -122,4 +107,25 @@ contract Health {
 	function ConsultaValidacao(uint256 p_cpf) constant returns (bool) {
 		return listaConsumidores[p_cpf].validado;
 	}
+}
+
+library SafeMath {
+	function times(uint256 x, uint256 y) internal returns (uint256) {
+		uint256 z = x * y;
+		assert(x == 0 || (z / x == y));
+		return z;
+	}
+	
+	function plus(uint256 x, uint256 y) internal returns (uint256) {
+		uint256 z = x + y;
+		assert(z >= x && z >= y);
+		return z;
+	}
+
+  	function div(uint256 a, uint256 b) internal constant returns (uint256) {
+	    // assert(b > 0); // Solidity automatically throws when dividing by 0
+	    uint256 c = a / b;
+	    // assert(a == b * c + a % b); // There is no case in which this doesn't hold
+	    return c;
+  	}
 }

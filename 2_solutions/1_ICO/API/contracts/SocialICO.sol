@@ -1,36 +1,7 @@
 pragma solidity ^0.4.13;
 
-library SafeMath {
-	function times(uint256 x, uint256 y) internal returns (uint256) {
-		uint256 z = x * y;
-		assert(x == 0 || (z / x == y));
-		return z;
-	}
-	
-	function plus(uint256 x, uint256 y) internal returns (uint256) {
-		uint256 z = x + y;
-		assert(z >= x && z >= y);
-		return z;
-	}
-
-  	function div(uint256 a, uint256 b) internal constant returns (uint256) {
-	    // assert(b > 0); // Solidity automatically throws when dividing by 0
-	    uint256 c = a / b;
-	    // assert(a == b * c + a % b); // There is no case in which this doesn't hold
-	    return c;
-  	}
-}
-
-library Library {
-  struct data {
-     uint256 val;
-     bool isInvestor;
-   }
-}
-
 contract SocialICO {
 	using SafeMath for uint256;
-	using Library for Library.data;
 	
 	string public name = "Social ICO"; 
     string public symbol = "SICO";
@@ -42,9 +13,14 @@ contract SocialICO {
 
 	uint256 public maxICOCap = 30 ether;
 	uint256 public minICOCap = 10 ether;
+
+	struct Investidor {
+		uint256 val;
+		bool isInvestor;
+	}
 	
 	mapping(address => uint256) public balances;
-	mapping(address => Library.data) public invested;
+	mapping(address => Investidor) public invested;
 	
 	uint256 private distributedAmount = 0;
 	uint256 private icoWeiRaised = 0;
@@ -79,10 +55,6 @@ contract SocialICO {
 
 	function SocialICO() {
 		owner = msg.sender;
-	}
-	
-	function getBalance() constant returns (uint256) {
-		return balances[msg.sender];
 	}
 	
 	function()
@@ -135,4 +107,29 @@ contract SocialICO {
 	function ContractBalance() returns (uint256) {
 		return this.balance;
 	}
+
+	function getBalance() constant returns (uint256) {
+		return balances[msg.sender];
+	}
+}
+
+library SafeMath {
+	function times(uint256 x, uint256 y) internal returns (uint256) {
+		uint256 z = x * y;
+		assert(x == 0 || (z / x == y));
+		return z;
+	}
+	
+	function plus(uint256 x, uint256 y) internal returns (uint256) {
+		uint256 z = x + y;
+		assert(z >= x && z >= y);
+		return z;
+	}
+
+  	function div(uint256 a, uint256 b) internal constant returns (uint256) {
+	    // assert(b > 0); // Solidity automatically throws when dividing by 0
+	    uint256 c = a / b;
+	    // assert(a == b * c + a % b); // There is no case in which this doesn't hold
+	    return c;
+  	}
 }

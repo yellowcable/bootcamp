@@ -1,26 +1,5 @@
 pragma solidity ^0.4.13;
 
-library SafeMath {
-	function times(uint256 x, uint256 y) internal returns (uint256) {
-		uint256 z = x * y;
-		assert(x == 0 || (z / x == y));
-		return z;
-	}
-	
-	function plus(uint256 x, uint256 y) internal returns (uint256) {
-		uint256 z = x + y;
-		assert(z >= x && z >= y);
-		return z;
-	}
-
-  	function div(uint256 a, uint256 b) internal constant returns (uint256) {
-	    // assert(b > 0); // Solidity automatically throws when dividing by 0
-	    uint256 c = a / b;
-	    // assert(a == b * c + a % b); // There is no case in which this doesn't hold
-	    return c;
-  	}
-}
-
 contract Agro {
 	using SafeMath for uint256;
     
@@ -63,6 +42,11 @@ contract Agro {
 		
 	function Registro(string p_id, uint256 p_dataRegistro, string p_produtor, string p_caracteristicaAnimal, string p_codRegistroMA) onlyOwner {
 		require(!listaAnimais[p_id].registrado);
+		require(!(sha3(p_id) == sha3("")));
+		require(!(p_dataRegistro == 0));
+		require(!(sha3(p_produtor) == sha3("")));
+		require(!(sha3(p_caracteristicaAnimal) == sha3("")));
+		require(!(sha3(p_codRegistroMA) == sha3("")));
 		
 		listaAnimais[p_id].datRegistro = p_dataRegistro;
 		listaAnimais[p_id].produtor = p_produtor;
@@ -84,6 +68,10 @@ contract Agro {
 	}
 
 	function Consumo(string p_id, uint256 p_datCompra, uint256 p_datBeneficiamento, string p_codRegistroCompra) {	
+		require(!(sha3(p_id) == sha3("")));
+		require(!(p_datCompra == 0));
+		require(!(p_datBeneficiamento == 0));
+		require(!(sha3(p_codRegistroCompra) == sha3("")));
 		require(listaAnimais[p_id].registrado);
 		require(!listaAnimais[p_id].comprado);
 		require(!listaCompradores[p_codRegistroCompra].consumiu);
@@ -120,4 +108,25 @@ contract Agro {
 	function ConsultaValidacao(string p_codRegistroCompra) constant returns (bool) {
 		return listaCompradores[p_codRegistroCompra].validado;
 	}
+}
+
+library SafeMath {
+	function times(uint256 x, uint256 y) internal returns (uint256) {
+		uint256 z = x * y;
+		assert(x == 0 || (z / x == y));
+		return z;
+	}
+	
+	function plus(uint256 x, uint256 y) internal returns (uint256) {
+		uint256 z = x + y;
+		assert(z >= x && z >= y);
+		return z;
+	}
+
+  	function div(uint256 a, uint256 b) internal constant returns (uint256) {
+	    // assert(b > 0); // Solidity automatically throws when dividing by 0
+	    uint256 c = a / b;
+	    // assert(a == b * c + a % b); // There is no case in which this doesn't hold
+	    return c;
+  	}
 }

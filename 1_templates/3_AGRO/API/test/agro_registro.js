@@ -8,28 +8,11 @@ contract('TU1 - Registro', function(accounts) {
     return Agro.deployed().then(function(instance) {
       inst = instance;
 
-      registro = {
-        id : "BOI1",
-        dataRegistro : 20170920,
-        produtor : "REI DO GADO",
-        caractAnimal : "PRETO",
-        codigoRegistroMA : "BP171"
-      };
-
-      return inst.Registro(registro.id, 
-                           registro.dataRegistro,
-                           registro.produtor,
-                           registro.caractAnimal,
-                           registro.codigoRegistroMA, {from: web3.eth.coinbase});
+      //Incluir registro 
     }).then(function(result) {
-        return inst.ConsultaRegistro.call(registro.id);
+      //incluir consulta do registro
     }).then(function(result) {
-        assert.equal(registro.dataRegistro, result[0], "dataRegistro nao está igual");
-        assert.equal(registro.produtor, result[1], "produtor não está igual");
-        assert.equal(registro.caractAnimal, result[2], "caractAnimal não está igual");
-        assert.equal(registro.codigoRegistroMA, result[3], "codigoRegistroMA não está igual");
-        assert.equal(true, result[4], "consta como nao registrado");
-        assert.equal(false, result[5], "consta como comprado");
+      //validar se o retorno é igual. (todas as variáveis sao iguais)
     });
   });
   it("Não é permitido o registro do mesmo animal (ID) duas vezes.", function() {

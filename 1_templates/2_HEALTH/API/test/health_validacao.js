@@ -9,42 +9,15 @@ contract('TU3 - Validação', function(accounts) {
     return Health.deployed().then(function(instance) {
       inst = instance;
 
-      registro = {
-        id : "LOTE1",
-        dataFrabric : 20170920,
-        empresa : "BAYER",
-        validade : 20180920,
-        quantidade : 50
-      };
-
-      return inst.Registro(registro.id, 
-                           registro.dataFrabric,
-                           registro.empresa,
-                           registro.validade,
-                           registro.quantidade, {from: web3.eth.coinbase});
+      //realiza o registro de um asset
     }).then(function(result) {
-      consumo = {
-        id : "LOTE1",
-        farmacia : "FARMACONDE",
-        crm_medico : "MEDICO",
-        cpf : 00000000000,
-        quantidade : 10,
-        data: 20170921
-      };
-
-      return inst.Consumo(consumo.id, 
-                           consumo.farmacia,
-                           consumo.crm_medico,
-                           consumo.cpf,
-                           consumo.quantidade,
-                           consumo.data, {from: web3.eth.coinbase});
+      //realiza o consumo desse asset
     }).then(function(result) {
-        return inst.Validacao(consumo.cpf,
-                              consumo.id, {from: web3.eth.coinbase});
+      //realiza a validacao desse consumo
     }).then(function(result) {
-        return inst.ConsultaValidacao.call(consumo.cpf);
+      //consulta a validacao
     }).then(function(result) {
-        assert.equal(true, result, "Não foi validado");
+      //verifica se o resultado é o resperado
     });
   });
   it("Não é permitido um não-consumidor validar.", function() {
