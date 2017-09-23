@@ -26,7 +26,7 @@ contract('TU2 - Consumo', function(accounts) {
         id : "LOTE1",
         farmacia : "FARMACONDE",
         crm_medico : "MEDICO",
-        cpf : 00000000000,
+        cpf : 00000000001,
         quantidade : 10,
         data: 20170921
       };
@@ -58,7 +58,7 @@ contract('TU2 - Consumo', function(accounts) {
         id : "LOTE1",
         farmacia : "FARMACONDE",
         crm_medico : "MEDICO",
-        cpf : 00000000001,
+        cpf : 00000000002,
         quantidade : 41,
         data: 20170921
       };
@@ -88,7 +88,7 @@ contract('TU2 - Consumo', function(accounts) {
         id : "LOTE1",
         farmacia : "FARMACONDE",
         crm_medico : "MEDICO",
-        cpf : 00000000002,
+        cpf : 00000000003,
         quantidade : 41,
         data: 20180922
       };

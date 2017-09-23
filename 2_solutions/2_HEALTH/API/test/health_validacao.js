@@ -27,7 +27,7 @@ contract('TU3 - Validação', function(accounts) {
         id : "LOTE1",
         farmacia : "FARMACONDE",
         crm_medico : "MEDICO",
-        cpf : 00000000000,
+        cpf : 00000010000,
         quantidade : 10,
         data: 20170921
       };

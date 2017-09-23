@@ -71,6 +71,12 @@ contract Health {
 		require(listaLotes[p_id].registrado);
 		require(!listaConsumidores[p_cpf].consumiu);
 		require(p_data < listaLotes[p_id].validade && p_qtd <= (listaLotes[p_id].qtd - listaLotes[p_id].qtdConsumida));
+		require(!(sha3(p_id) == sha3("")));
+		require(!(sha3(p_farmacia) == sha3("")));
+		require(!(sha3(p_crm_medico) == sha3("")));
+		require(!(p_cpf == 0));
+		require(!(p_qtd == 0));
+		require(!(p_data == 0));
 
 		uint256 qtdConsumida = listaLotes[p_id].qtdConsumida;
 
