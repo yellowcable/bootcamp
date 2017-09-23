@@ -6,7 +6,7 @@ contract Agro {
 	address public owner;
 
 	struct Animal {
-		uint256 datRegistro;
+		uint256 dataRegistro;
 		string produtor;
 		//string idAnimal;
 		string caracteristicaAnimal;
@@ -16,16 +16,16 @@ contract Agro {
 	}
 
 	struct Comprador {
-		uint256 datCompra;
+		uint256 dataCompra;
 		string idAnimal;
-		uint256 datBeneficiamento;
+		uint256 dataBeneficimento;
 		//string codRegistroCompra;
 		bool consumiu;
 		bool validado;
 	}
 
 	event EventoRegistro(address indexed _who, string _idAnimal, uint256 _dataRegistro, string _produtor, string _caracteristicaAnimal, string _codRegistroMA);
-	event EventoConsumo(string _idAnimal, uint256 _datCompra, uint256 _datBeneficiamento, string _codRegistroCompra);
+	event EventoConsumo(string _idAnimal, uint256 _dataCompra, uint256 _dataBeneficimento, string _codRegistroCompra);
 	event EventoValidacao(string _codRegistroMA, string _idAnimal);
 	
 	mapping(string => Animal) listaAnimais;
@@ -48,7 +48,7 @@ contract Agro {
 		require(!(sha3(p_caracteristicaAnimal) == sha3("")));
 		require(!(sha3(p_codRegistroMA) == sha3("")));
 		
-		listaAnimais[p_id].datRegistro = p_dataRegistro;
+		listaAnimais[p_id].dataRegistro = p_dataRegistro;
 		listaAnimais[p_id].produtor = p_produtor;
 		listaAnimais[p_id].caracteristicaAnimal = p_caracteristicaAnimal;
 		listaAnimais[p_id].codRegistroMA = p_codRegistroMA;
@@ -59,7 +59,7 @@ contract Agro {
 	}
 
 	function ConsultaRegistro(string p_id) constant returns (uint256, string, string, string, bool, bool) {
-		return (listaAnimais[p_id].datRegistro,
+		return (listaAnimais[p_id].dataRegistro,
 				listaAnimais[p_id].produtor,
 				listaAnimais[p_id].caracteristicaAnimal,
 				listaAnimais[p_id].codRegistroMA,
@@ -67,31 +67,31 @@ contract Agro {
 				listaAnimais[p_id].comprado);
 	}
 
-	function Consumo(string p_id, uint256 p_datCompra, uint256 p_datBeneficiamento, string p_codRegistroCompra) {	
+	function Consumo(string p_id, uint256 p_dataCompra, uint256 p_dataBeneficimento, string p_codRegistroCompra) {	
 		require(!(sha3(p_id) == sha3("")));
-		require(!(p_datCompra == 0));
-		require(!(p_datBeneficiamento == 0));
+		require(!(p_dataCompra == 0));
+		require(!(p_dataBeneficimento == 0));
 		require(!(sha3(p_codRegistroCompra) == sha3("")));
 		require(listaAnimais[p_id].registrado);
 		require(!listaAnimais[p_id].comprado);
 		require(!listaCompradores[p_codRegistroCompra].consumiu);
-		require(p_datCompra > listaAnimais[p_id].datRegistro && p_datBeneficiamento > listaAnimais[p_id].datRegistro);
+		require(p_dataCompra > listaAnimais[p_id].dataRegistro && p_dataBeneficimento > listaAnimais[p_id].dataRegistro);
 
-		listaCompradores[p_codRegistroCompra].datCompra = p_datCompra;
+		listaCompradores[p_codRegistroCompra].dataCompra = p_dataCompra;
 		listaCompradores[p_codRegistroCompra].idAnimal = p_id;
-		listaCompradores[p_codRegistroCompra].datBeneficiamento = p_datBeneficiamento;
+		listaCompradores[p_codRegistroCompra].dataBeneficimento = p_dataBeneficimento;
 		listaCompradores[p_codRegistroCompra].validado = false;
 		listaCompradores[p_codRegistroCompra].consumiu = true;
 
 		listaAnimais[p_id].comprado = true;
 
-		EventoConsumo(p_id, p_datCompra, p_datBeneficiamento, p_codRegistroCompra);
+		EventoConsumo(p_id, p_dataCompra, p_dataBeneficimento, p_codRegistroCompra);
 	}
 
 	function ConsultaConsumo(string p_codRegistroCompra) constant returns (uint256, string, uint256, bool, bool) {
-		return (listaCompradores[p_codRegistroCompra].datCompra,
+		return (listaCompradores[p_codRegistroCompra].dataCompra,
 				listaCompradores[p_codRegistroCompra].idAnimal,
-				listaCompradores[p_codRegistroCompra].datBeneficiamento,
+				listaCompradores[p_codRegistroCompra].dataBeneficimento,
 				listaCompradores[p_codRegistroCompra].validado,
 				listaCompradores[p_codRegistroCompra].consumiu);
 	}

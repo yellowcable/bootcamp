@@ -20,7 +20,7 @@ contract Agro {
 	function ConsultaRegistro(string p_id) constant returns (uint256, string, string, string, bool, bool) {
 	}
 
-	function Consumo(string p_id, uint256 p_datCompra, uint256 p_datBeneficiamento, string p_codRegistroCompra) {		
+	function Consumo(string p_id, uint256 p_dataCompra, uint256 p_dataBeneficiamento, string p_codRegistroCompra) {		
 	}
 
 	function ConsultaConsumo(string p_codRegistroCompra) constant returns (uint256, string, uint256, bool, bool) {
