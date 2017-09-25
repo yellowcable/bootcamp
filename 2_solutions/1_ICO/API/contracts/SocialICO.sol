@@ -104,10 +104,6 @@ contract SocialICO {
 		return icoWeiRaised;
 	}
 
-	function ContractBalance() returns (uint256) {
-		return this.balance;
-	}
-
 	function getBalance() constant returns (uint256) {
 		return balances[msg.sender];
 	}
