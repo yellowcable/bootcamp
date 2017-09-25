@@ -112,8 +112,6 @@ contract('TU4', function(accounts) {
     return SocialICO.deployed().then(function(instance) {
       inst = instance;
       return inst.Drain({from: web3.eth.coinbase});
-    }).then(function(result) {
-      return inst.ContractBalance.call();
     }).then(function(balance) {
       var saldo_empresa_depois = web3.fromWei(web3.eth.getBalance(web3.eth.coinbase));
       var delta = parseInt(saldo_empresa_depois) - parseInt(saldo_empresa_antes);

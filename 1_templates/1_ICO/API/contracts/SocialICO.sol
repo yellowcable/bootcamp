@@ -61,28 +61,12 @@ contract SocialICO {
 		payable 
 		isWorking
 	{		
-		require(msg.value > 0); 
-		
-		uint256 tokenAmount = msg.value.times(tokensPerEther);
-		balances[msg.sender] = balances[msg.sender].plus(tokenAmount);
-		invested[msg.sender].val = invested[msg.sender].val.plus(msg.value);
-		distributedAmount = distributedAmount.plus(tokenAmount);
-		icoWeiRaised = icoWeiRaised.plus(msg.value);
-		
-		invested[msg.sender].isInvestor = true;
-
 		EventDonated(msg.sender, msg.value);
 	}
 
 	function Approve() 
 		isInvestor
 	{		
-		stakeApproved = stakeApproved + invested[msg.sender].val;
-
-		if(stakeApproved >= (icoWeiRaised.div(3))){
-			approved = true;
-		}
-
 		EventApproved(msg.sender);
 	}
 
@@ -94,18 +78,11 @@ contract SocialICO {
 		onlyOwner
 		isApproved
 	{
-		uint256 weiAmount = this.balance;
-		owner.transfer(weiAmount);
-		
 		EventDrain(owner, weiAmount);
 	}
 
 	function Raised() returns (uint256){
 		return icoWeiRaised;
-	}
-
-	function ContractBalance() returns (uint256) {
-		return this.balance;
 	}
 
 	function getBalance() constant returns (uint256) {
