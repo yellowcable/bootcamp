@@ -29,7 +29,7 @@ contract Agro {
 	event EventoValidacao(string _codRegistroMA, string _idAnimal, uint256 p_dataCompra, uint256 p_rate);
 	
 	mapping(string => Animal) listaAnimais; //lista por ID Animal
-	mapping(string => Produto[]) listaConsumo; //lista por codRegistroBeneficiamento
+	mapping(string => Produto) listaConsumo; //lista por codRegistroBeneficiamento
 
 	modifier onlyOwner() {
 		require(msg.sender == owner);
